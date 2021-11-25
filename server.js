@@ -11,6 +11,11 @@ const categoryRoute = require('./routes/categories');
 dotenv.config();
 
 app.use(express.json());
+app.use(
+    express.urlencoded({
+        extended: true,
+    })
+);
 
 mongoose
     .connect(process.env.MONGO_DB_CONNECTION, {
@@ -25,6 +30,11 @@ app.use('/api/users', usersRoute);
 app.use('/api/closets', closetRoute);
 app.use('/api/categories', categoryRoute);
 
-app.listen(process.env.PORT, () => {
-    console.log('Server is running.');
+const port = process.env.PORT || 8080;
+
+const server = app.listen(port, (error) => {
+    if (error) {
+        console.log('Error running Express');
+    }
+    console.log('Server is running on port', server.address().port);
 });
